@@ -1,0 +1,4 @@
+jsnfmt
+*.json
+.DS_Store
+*.dSYM

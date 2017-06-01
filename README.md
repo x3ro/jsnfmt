@@ -1,38 +1,42 @@
-A very small, lightweight JSON formatter for *nix systems.
-It takes no command line switches, doesn't call malloc or store any more than the last character read.
-Designed to be used in long running streams.
+# jsnfmt
+
+A fast, lightweight JSON formatter for *nix systems. Forked from [bsouther/jsonf](https://github.com/bsouther/jsonf).
+
+[How is GNU `yes` so fast?](https://www.reddit.com/r/unix/comments/6gxduc/how_is_gnu_yes_so_fast/) helped making it faster :)
+
+## Why?
+
+Sometimes I have to work with large JSON files (> 1GB). These are kind of hard to deal with if they're not formatted (i.e. a single line). The fastest JSON formatter I found performed at around 15 MB/s.
+
+`jsnfmt` is roughly ten times faster on my system:
+
+    ψ jsnfmt large.json | pv > /dev/null
+    1032MiB 0:00:04 [ 158MiB/s] [     <=>                               ]
+
+## Usage
+
+`jsnfmt` always writes to `stdout`. It can read input from `stdin`
+
+    echo '{"foo": [1,2,3], "bar": "baz"}' | jsnfmt
+
+or from a file
+
+    jsnfmt ~/some.json > formatted.json
+
+It does not have any command line switches.
 
 
+## Building
 
-Compiling:
+Prerequisites:
 
-    cc -o jsonf jsonf.c
+* C compiler (tested with clang)
+* clang-format (if you wish to contribute)
+* make
 
-Installing:    (as root)
-    
-    cp jsonf /usr/bin
-    
-    chmod 755 /usr/bin/jsonf
+After installing these, you can simply run `make`.
 
-Using:
-    Works like most *nix command line programs.
-    Can read input from a file or from stdin.
-    Writes all output to stdout.
 
-    jsonf <file>
+## License
 
-    or
-
-    cat <file> | jsonf
-
-    or 
- 
-    jsonf < <file>
-
-    or (as used by author to format console output from JSON bases web services...)
-  
-    tail -f <file> | jsonf
-    
-    
-
-Author: Ben Souther
+See the `LICENSE` file.
